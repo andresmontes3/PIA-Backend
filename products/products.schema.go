@@ -1,14 +1,10 @@
 package products
 
 type Product struct {
-	ProductID       int     `json:"productID"`
-	ProductName     string  `json:"productName"`
-	SupplierID      int     `json:"supplierID"`
-	CategoryID      int     `json:"categoryID"`
-	QuantityPerUnit string  `json:"quantityPerUnit"`
-	UnitPrice       float64 `json:"unitPrice"` //money
-	UnitsInStock    int     `json:"unitsInStock"`
-	UnitsOnOrder    int     `json:"unitsOnOrder"`
-	ReorderLevel    int     `json:"reorderLevel"`
+	ProductID       int     `json:"product_id"`
+	ProductName     string  `json:"product_name"`
+	QuantityPerUnit string  `json:"quantity_per_unit"`
+	UnitPrice       float64 `json:"unit_price"` //money
+	UnitsInStock    int     `json:"units_in_stock"`
 	Discontinued    bool    `json:"discontinued"`
 }

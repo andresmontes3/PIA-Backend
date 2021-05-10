@@ -1,7 +1,6 @@
 package products
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,62 +8,65 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/labstack/echo/v4"
+	"gorm.io/driver/sqlserver"
+	"gorm.io/gorm"
 )
+
+func dbConnect() *gorm.DB {
+	log.Printf("CONECTANDO...\n")
+
+	dsn := "sqlserver://@localhost:1433?database=Backend"
+	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	log.Printf("Connected!\n")
+	return db
+}
 
 func getProduct(c echo.Context) error {
 
-	ProductID := c.QueryParam("productID")
-
-	Product, err := selectProduct(ProductID)
+	ProductID := c.QueryParam("product_id")
+	log.Printf(ProductID)
+	products, err := selectProduct(ProductID)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	return c.JSON(http.StatusOK, Product)
+	return c.JSON(http.StatusOK, products)
 }
 
-func selectProduct(ProductID string) (Product, error) {
+func selectProduct(ProductID string) ([]Product, error) {
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
+	db := dbConnect()
 
-	Product := Product{}
+	products := []Product{}
 
-	tsql := fmt.Sprintf("SELECT * FROM Products WHERE ProductID = %s;", ProductID)
-	log.Printf(ProductID)
-	rows, err := db.Query(tsql)
-	if err != nil {
-		fmt.Println("Error al leer las filas " + err.Error())
-		return Product, err
+	if ProductID != "" {
+		db.Where("product_id = ?", ProductID).First(&products)
+
+		return products, nil
+	} else {
+
+		result := db.Order("product_name").Find(&products)
+		return products, result.Error
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		er := rows.Scan(&Product.ProductID, &Product.ProductName, &Product.SupplierID, &Product.CategoryID, &Product.QuantityPerUnit,
-			Product.UnitPrice, &Product.UnitsInStock, &Product.UnitsOnOrder, &Product.ReorderLevel, &Product.Discontinued)
-		if err != nil {
-			fmt.Println("Error al leer las filas: " + err.Error())
-			return Product, er
-		}
-
-	}
-	defer db.Close()
-	return Product, nil
 }
 
-func putProduct(c echo.Context) error {
-	Product := Product{}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+func addProduct(c echo.Context) error {
+	product := Product{}
 
 	defer c.Request().Body.Close()
 
-	err := json.NewDecoder(c.Request().Body).Decode(&Product)
+	err := json.NewDecoder(c.Request().Body).Decode(&product)
 	if err != nil {
 		log.Printf("fallo al procesar addProduct: %s", err)
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
-	result, err := updateProduct(Product.ProductID, Product.ProductName, Product.SupplierID, Product.CategoryID, Product.QuantityPerUnit,
-		Product.UnitPrice, Product.UnitsInStock, Product.UnitsOnOrder, Product.ReorderLevel, Product.Discontinued)
+	result, err := insertProduct(product.ProductID, product.ProductName, product.QuantityPerUnit, product.UnitPrice,
+		product.UnitsInStock, product.Discontinued)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
@@ -72,54 +74,88 @@ func putProduct(c echo.Context) error {
 
 	fmt.Printf("Filas modificadas: %d\n", result)
 
-	log.Printf("Este es un cliente: %#v", Product)
+	log.Printf("Este es un empleado: %#v", product)
 
-	return c.String(http.StatusOK, "tenemos tu cliente")
+	return c.String(http.StatusOK, "tenemos tu producto")
+}
+
+func insertProduct(productID int, productName string, quantityPerUnit string, unitPrice float64,
+	unitsInStock int, discontinued bool) (int64, error) {
+
+	db := dbConnect()
+	/*
+		var disc int
+		if discontinued {
+			disc = 1
+		} else {
+			disc = 0
+		}
+	*/
+	product := Product{ProductID: productID, ProductName: productName, QuantityPerUnit: quantityPerUnit,
+		UnitPrice: unitPrice, UnitsInStock: unitsInStock, Discontinued: discontinued}
+	result := db.Create(&product)
+
+	return result.RowsAffected, result.Error
 
 }
 
-func updateProduct(ProductID int, ProductName string, SupplierID int, CategoryID int, QuantityPerUnit string,
-	UnitPrice float64, UnitsInStock int, UnitsOnOrder int, ReorderLevel int, Discontinued bool) (int64, error) {
+/////////////////////////////////////////////////////////////////////////
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
-	var discontinued int
-	if Discontinued {
-		discontinued = 1
-	} else {
-		discontinued = 0
-	}
-	tsql := fmt.Sprintf("UPDATE Products SET ProductName='%s',SupplierID=%d,CategoryID=%d,QuantityPerUnit='%s',UnitPrice=%f,UnitsInStock=%d,UnitsOnOrder=%d,ReorderLevel=%d,Discontinued='%d' WHERE ProductID = %d;",
-		ProductName, SupplierID, CategoryID, QuantityPerUnit,
-		UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, discontinued, ProductID)
+func putProduct(c echo.Context) error {
+	product := Product{}
 
-	result, err := db.Exec(tsql)
+	defer c.Request().Body.Close()
+
+	err := json.NewDecoder(c.Request().Body).Decode(&product)
 	if err != nil {
-		fmt.Println("Error al actualizar la fila " + err.Error())
-		return -1, err
+		log.Printf("fallo al procesar putProduct: %s", err)
+		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
-	defer db.Close()
-	return result.RowsAffected()
+	result, err := updateProduct(product.ProductID, product.ProductName, product.QuantityPerUnit, product.UnitPrice,
+		product.UnitsInStock, product.Discontinued)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError)
+	}
+
+	fmt.Printf("Filas modificadas: %d\n", result)
+
+	log.Printf("Este es un producto: %#v", product)
+
+	return c.String(http.StatusOK, "tenemos tu producto")
+
 }
 
-var server = "localhost"
-var port = 1433
-var user = ""
-var password = ""
-var database = "Northwind"
-var db *sql.DB
+func updateProduct(productID int, productName string, quantityPerUnit string, unitPrice float64,
+	unitsInStock int, discontinued bool) (int64, error) {
 
-func connectionSql() {
-	var err error
-	// Create connection string
-	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
-		server, user, password, port, database)
-	// Create connection pool
-	db, err = sql.Open("sqlserver", connString)
+	db := dbConnect()
+
+	result := db.Model(&Product{}).Where("product_id = ?", productID).Updates(map[string]interface{}{
+		"product_name": productName, "quantity_per_unit": quantityPerUnit, "unit_price": unitPrice,
+		"units_in_stock": unitsInStock, "discontinued": discontinued})
+
+	return result.RowsAffected, result.Error
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+func removeProduct(c echo.Context) error {
+	ProductID := c.QueryParam("product_id")
+
+	result, err := deleteProduct(ProductID)
 	if err != nil {
-		log.Fatal("Error creating connection pool: " + err.Error())
+		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	log.Printf("Connected!\n")
+
+	fmt.Printf("Filas modificadas: %d\n", result)
+	return c.String(http.StatusOK, "Producto eliminado")
+}
+
+func deleteProduct(productID string) (int64, error) {
+
+	db := dbConnect()
+
+	result := db.Where("product_id = ?", productID).Delete(&Product{})
+	return result.RowsAffected, result.Error
 }

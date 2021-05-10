@@ -1,7 +1,6 @@
 package employees
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,52 +8,54 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/labstack/echo/v4"
+	"gorm.io/driver/sqlserver"
+	"gorm.io/gorm"
 )
+
+func dbConnect() *gorm.DB {
+	log.Printf("CONECTANDO...\n")
+
+	dsn := "sqlserver://@localhost:1433?database=Backend"
+	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	log.Printf("Connected!\n")
+	return db
+}
 
 func getEmployee(c echo.Context) error {
 
-	EmployeeID := c.QueryParam("employeeID")
-
-	employee, err := selectEmployee(EmployeeID)
+	EmployeeID := c.QueryParam("employee_id")
+	log.Printf(EmployeeID)
+	employees, err := selectEmployee(EmployeeID)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	return c.JSON(http.StatusOK, employee)
+	return c.JSON(http.StatusOK, employees)
 }
 
-func selectEmployee(EmployeeID string) (Employee, error) {
+func selectEmployee(EmployeeID string) ([]Employee, error) {
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
+	db := dbConnect()
 
-	Employee := Employee{}
+	employees := []Employee{}
 
-	tsql := fmt.Sprintf("SELECT * FROM Employees WHERE EmployeeID = %s;", EmployeeID)
-	log.Printf(EmployeeID)
-	rows, err := db.Query(tsql)
-	if err != nil {
-		fmt.Println("Error al leer las filas " + err.Error())
-		return Employee, err
+	if EmployeeID != "" {
+		db.Where("employee_id = ?", EmployeeID).First(&employees)
+
+		return employees, nil
+	} else {
+
+		result := db.Order("last_name").Find(&employees)
+
+		return employees, result.Error
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		er := rows.Scan(&Employee.EmployeeID, &Employee.LastName, &Employee.FirstName, &Employee.Title,
-			&Employee.TitleOfCourtesy, &Employee.BirthDate, &Employee.HireDate, &Employee.Address,
-			&Employee.City, &Employee.Region, &Employee.PostalCode, &Employee.Country, &Employee.HomePhone, &Employee.Extension, &Employee.Photo,
-			&Employee.Notes, &Employee.ReportsTo, &Employee.PhotoPath)
-		if err != nil {
-			fmt.Println("Error al leer las filas: " + err.Error())
-			return Employee, er
-		}
-
-	}
-	defer db.Close()
-	return Employee, nil
 }
 
-func putEmployee(c echo.Context) error {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+func addEmployee(c echo.Context) error {
 	employee := Employee{}
 
 	defer c.Request().Body.Close()
@@ -65,10 +66,48 @@ func putEmployee(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
+	result, err := insertEmployee(employee.EmployeeID, employee.LastName, employee.FirstName, employee.Title,
+		employee.HireDate, employee.Address, employee.City, employee.Region, employee.PostalCode, employee.Phone)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError)
+	}
+
+	fmt.Printf("Filas modificadas: %d\n", result)
+
+	log.Printf("Este es un empleado: %#v", employee)
+
+	return c.String(http.StatusOK, "tenemos tu empleado")
+}
+
+func insertEmployee(employeeID int, lastName string, firstName string, title string, hireDate string,
+	address string, city string, region string, postalCode string, phone string) (int64, error) {
+
+	db := dbConnect()
+
+	employee := Employee{EmployeeID: employeeID, LastName: lastName, FirstName: firstName, Title: title,
+		HireDate: hireDate, Address: address, City: city, Region: region, PostalCode: postalCode, Phone: phone}
+	result := db.Create(&employee)
+
+	return result.RowsAffected, result.Error
+
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+func putEmployee(c echo.Context) error {
+	employee := Employee{}
+
+	defer c.Request().Body.Close()
+
+	err := json.NewDecoder(c.Request().Body).Decode(&employee)
+	if err != nil {
+		log.Printf("fallo al procesar putEmployee: %s", err)
+		return echo.NewHTTPError(http.StatusInternalServerError)
+	}
+
 	result, err := updateEmployee(employee.EmployeeID, employee.LastName, employee.FirstName, employee.Title,
-		employee.TitleOfCourtesy, employee.BirthDate, employee.HireDate, employee.Address,
-		employee.City, employee.Region, employee.PostalCode, employee.Country, employee.HomePhone, employee.Extension, employee.Photo,
-		employee.Notes, employee.ReportsTo, employee.PhotoPath)
+		employee.HireDate, employee.Address, employee.City, employee.Region, employee.PostalCode, employee.Phone)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
@@ -78,50 +117,39 @@ func putEmployee(c echo.Context) error {
 
 	log.Printf("Este es un cliente: %#v", employee)
 
-	return c.String(http.StatusOK, "tenemos tu cliente")
+	return c.String(http.StatusOK, "tenemos tu empleado")
 
 }
 
-func updateEmployee(EmployeeID int, LastName string, FirstName string, Title string, TitleOfCourtesy string,
-	BirthDate string, HireDate string, Address string, City string, Region string, PostalCode string,
-	Country string, HomePhone string, Extension string, Photo string, Notes string, ReportsTo int, PhotoPath string) (int64, error) {
+func updateEmployee(employeeID int, lastName string, firstName string, title string, hireDate string,
+	address string, city string, region string, postalCode string, phone string) (int64, error) {
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
+	db := dbConnect()
 
-	tsql := fmt.Sprintf("UPDATE Employees SET LastName='%s',FirstName='%s',Title='%s',TitleOfCourtesy='%s',BirthDate='%s',Hiredate ='%s',Address='%s',City='%s',Region='%s',PostalCode='%s',Country ='%s',HomePhone='%s',Extension='%s',Photo='%s',Notes='%s',ReportsTo = %d, PhotoPath='%s' WHERE EmployeeID = %d;",
-		LastName, FirstName, Title,
-		TitleOfCourtesy, BirthDate, HireDate, Address,
-		City, Region, PostalCode, Country, HomePhone, Extension, Photo,
-		Notes, ReportsTo, PhotoPath, EmployeeID)
+	result := db.Model(&Employee{}).Where("employee_id = ?", employeeID).Updates(map[string]interface{}{
+		"last_name": lastName, "first_name": firstName, "title": title, "hire_date": hireDate,
+		"address": address, "city": city, "region": region, "postal_code": postalCode, "phone": phone})
 
-	result, err := db.Exec(tsql)
-	if err != nil {
-		fmt.Println("Error al actualizar la fila " + err.Error())
-		return -1, err
-	}
-
-	defer db.Close()
-	return result.RowsAffected()
+	return result.RowsAffected, result.Error
 }
 
-var server = "localhost"
-var port = 1433
-var user = ""
-var password = ""
-var database = "Northwind"
-var db *sql.DB
+///////////////////////////////////////////////////////////////////////////////////////////////
+func removeEmployee(c echo.Context) error {
+	EmployeeID := c.QueryParam("employee_id")
 
-func connectionSql() {
-	var err error
-	// Create connection string
-	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
-		server, user, password, port, database)
-	// Create connection pool
-	db, err = sql.Open("sqlserver", connString)
+	result, err := deleteEmployee(EmployeeID)
 	if err != nil {
-		log.Fatal("Error creating connection pool: " + err.Error())
+		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	log.Printf("Connected!\n")
+
+	fmt.Printf("Filas modificadas: %d\n", result)
+	return c.String(http.StatusOK, "Empleado eliminado")
+}
+
+func deleteEmployee(employeeID string) (int64, error) {
+
+	db := dbConnect()
+
+	result := db.Where("employee_id = ?", employeeID).Delete(&Employee{})
+	return result.RowsAffected, result.Error
 }

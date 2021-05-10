@@ -1,7 +1,6 @@
 package customers
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,49 +8,53 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/labstack/echo/v4"
+	"gorm.io/driver/sqlserver"
+	"gorm.io/gorm"
 )
+
+func dbConnect() *gorm.DB {
+	log.Printf("CONECTANDO...\n")
+
+	dsn := "sqlserver://@localhost:1433?database=Backend"
+	db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	log.Printf("Connected!\n")
+	return db
+}
 
 func getCustomer(c echo.Context) error {
 
-	CustomerID := c.QueryParam("customerID")
+	CustomerID := c.QueryParam("customer_id")
 	log.Printf(CustomerID)
-	customer, err := selectCustomer(CustomerID)
+	customers, err := selectCustomer(CustomerID)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	return c.JSON(http.StatusOK, customer)
+	return c.JSON(http.StatusOK, customers)
 }
 
-func selectCustomer(CustomerID string) (Customer, error) {
+func selectCustomer(CustomerID string) ([]Customer, error) {
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
+	db := dbConnect()
 
-	customer := Customer{}
+	customers := []Customer{}
 
-	tsql := fmt.Sprintf("SELECT * FROM Customers WHERE CustomerID = '%s';", CustomerID)
-	rows, err := db.Query(tsql)
-	if err != nil {
-		fmt.Println("Error al leer las filas " + err.Error())
-		return customer, err
+	if CustomerID != "" {
+		db.Where("customer_id = ?", CustomerID).First(&customers)
+
+		return customers, nil
+	} else {
+
+		result := db.Order("company_name").Find(&customers)
+
+		return customers, result.Error
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		er := rows.Scan(&customer.CustomerID, &customer.CompanyName, &customer.ContactName, &customer.ContactTitle,
-			&customer.Address, &customer.City, &customer.Region, &customer.PostalCode,
-			&customer.Country, &customer.Phone, &customer.Fax)
-		if err != nil {
-			fmt.Println("Error al leer las filas: " + err.Error())
-			return customer, er
-		}
-
-	}
-	defer db.Close()
-	return customer, nil
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 func addCustomer(c echo.Context) error {
 	customer := Customer{}
 
@@ -65,7 +68,7 @@ func addCustomer(c echo.Context) error {
 
 	result, err := insertCustomer(customer.CustomerID, customer.CompanyName, customer.ContactName, customer.ContactTitle,
 		customer.Address, customer.City, customer.Region, customer.PostalCode,
-		customer.Country, customer.Phone, customer.Fax)
+		customer.Country, customer.Phone)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
@@ -79,24 +82,20 @@ func addCustomer(c echo.Context) error {
 }
 
 func insertCustomer(customerID string, companyName string, contactName string, contactTitle string, address string, city string,
-	region string, postalCode string, country string, phone string, fax string) (int64, error) {
+	region string, postalCode string, country string, phone string) (int64, error) {
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
+	db := dbConnect()
 
-	tsql := fmt.Sprintf("INSERT INTO Customers VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');",
-		customerID, companyName, contactName, contactTitle, address, city, region, postalCode, country, phone, fax)
+	customer := Customer{CustomerID: customerID, CompanyName: companyName, ContactName: contactName,
+		ContactTitle: contactTitle, Address: address, City: city, Region: region, PostalCode: postalCode,
+		Country: country, Phone: phone}
+	result := db.Create(&customer)
 
-	result, err := db.Exec(tsql)
-	if err != nil {
-		fmt.Println("Error al insertar nueva fila " + err.Error())
-		return -1, err
-	}
+	return result.RowsAffected, result.Error
 
-	defer db.Close()
-	return result.RowsAffected()
 }
+
+/////////////////////////////////////////////////////////////////////////
 
 func putCustomer(c echo.Context) error {
 	customer := Customer{}
@@ -111,7 +110,7 @@ func putCustomer(c echo.Context) error {
 
 	result, err := updateCustomer(customer.CustomerID, customer.CompanyName, customer.ContactName, customer.ContactTitle,
 		customer.Address, customer.City, customer.Region, customer.PostalCode,
-		customer.Country, customer.Phone, customer.Fax)
+		customer.Country, customer.Phone)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
@@ -126,27 +125,20 @@ func putCustomer(c echo.Context) error {
 }
 
 func updateCustomer(customerID string, companyName string, contactName string, contactTitle string, address string, city string,
-	region string, postalCode string, country string, phone string, fax string) (int64, error) {
+	region string, postalCode string, country string, phone string) (int64, error) {
 
-	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
+	db := dbConnect()
 
-	tsql := fmt.Sprintf("UPDATE Customers SET CompanyName='%s',ContactName = '%s',ContactTitle='%s',Address='%s',City='%s',Region='%s',PostalCode='%s',Country='%s',Phone='%s',Fax='%s' WHERE CustomerID = '%s';",
-		companyName, contactName, contactTitle, address, city, region, postalCode, country, phone, fax, customerID)
+	result := db.Model(&Customer{}).Where("customer_id = ?", customerID).Updates(map[string]interface{}{"company_name": companyName,
+		"contact_name": contactName, "contact_title": contactTitle, "address": address, "city": city, "region": region,
+		"postal_code": postalCode, "country": country, "phone": phone})
 
-	result, err := db.Exec(tsql)
-	if err != nil {
-		fmt.Println("Error al actualizar la fila " + err.Error())
-		return -1, err
-	}
-
-	defer db.Close()
-	return result.RowsAffected()
+	return result.RowsAffected, result.Error
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 func removeCustomer(c echo.Context) error {
-	CustomerID := c.QueryParam("customerID")
+	CustomerID := c.QueryParam("customer_id")
 
 	result, err := deleteCustomer(CustomerID)
 	if err != nil {
@@ -159,35 +151,9 @@ func removeCustomer(c echo.Context) error {
 
 func deleteCustomer(customerID string) (int64, error) {
 	log.Printf("CONECTANDO...\n")
-	connectionSql()
-	log.Printf("TERMINADO DE CONECTAR\n")
 
-	tsql := fmt.Sprintf("DELETE FROM Customers WHERE CustomerID = '%s';", customerID)
-	result, err := db.Exec(tsql)
-	if err != nil {
-		fmt.Println("Error al actualizar la fila " + err.Error())
-		return -1, err
-	}
-	defer db.Close()
-	return result.RowsAffected()
-}
+	db := dbConnect()
 
-var server = "localhost"
-var port = 1433
-var user = ""
-var password = ""
-var database = "Northwind"
-var db *sql.DB
-
-func connectionSql() {
-	var err error
-	// Create connection string
-	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
-		server, user, password, port, database)
-	// Create connection pool
-	db, err = sql.Open("sqlserver", connString)
-	if err != nil {
-		log.Fatal("Error creating connection pool: " + err.Error())
-	}
-	log.Printf("Connected!\n")
+	result := db.Where("customer_id = ?", customerID).Delete(&Customer{})
+	return result.RowsAffected, result.Error
 }
