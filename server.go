@@ -8,6 +8,7 @@ import (
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func inicio(c echo.Context) error {
@@ -17,9 +18,16 @@ func inicio(c echo.Context) error {
 func main() {
 
 	e := echo.New()
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+	}))
+
 	customers.Routes(e)
 	employees.Routes(e)
 	products.Routes(e)
 
 	e.Logger.Fatal(e.Start(":1323"))
+
 }
