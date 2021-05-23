@@ -2,12 +2,15 @@ package customers
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func Routes(e *echo.Echo) {
 
-	e.GET("/customers", getCustomer)
-	e.POST("/customers", addCustomer)
-	e.PUT("/customers", putCustomer)
-	e.DELETE("/customers", removeCustomer)
+	r := e.Group("/api")
+	r.Use(middleware.JWT([]byte("pia")))
+	r.GET("/customers", getCustomer)
+	r.POST("/customers", addCustomer)
+	r.PUT("/customers", putCustomer)
+	r.DELETE("/customers", removeCustomer)
 }

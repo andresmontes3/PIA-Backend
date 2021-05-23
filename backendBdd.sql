@@ -38,9 +38,24 @@ CREATE TABLE products(
 	discontinued bit
 );
 
+CREATE TABLE users(
+	user_id int primary key,
+	username nvarchar(20) not null,
+	password nvarchar(50) not null,
+	first_name nvarchar(50) not null,
+	last_name nvarchar(50) not null,
+	email nvarchar(50) not null
+);
 
+
+
+
+
+
+INSERT INTO users VALUES (1,'josuefdz','contra','Josue','Fernandez','josuefdz@mail.com')
 
 INSERT INTO Customers VALUES ('MYID','Panadería Roberto','Roberto Fuentes','Dueño',' Calle Nogal #3556, Colonia Bosque Verde, Monterrey','Nuevo León','Centro','64210','México','8123451')
+
 
 
 select * from customers

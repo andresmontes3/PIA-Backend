@@ -2,12 +2,15 @@ package products
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func Routes(e *echo.Echo) {
 
-	e.GET("/products", getProduct)
-	e.PUT("/products", putProduct)
-	e.DELETE("/products", removeProduct)
-	e.POST("/products", addProduct)
+	r := e.Group("/api")
+	r.Use(middleware.JWT([]byte("pia")))
+	r.GET("/products", getProduct)
+	r.PUT("/products", putProduct)
+	r.DELETE("/products", removeProduct)
+	r.POST("/products", addProduct)
 }
