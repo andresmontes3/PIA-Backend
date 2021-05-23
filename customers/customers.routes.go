@@ -8,7 +8,7 @@ import (
 func Routes(e *echo.Echo) {
 
 	r := e.Group("/api")
-	r.Use(middleware.JWT([]byte("pia")))
+	r.Use(middleware.JWT([]byte("pia"))) //se restringen las rutas con la palabra pia
 	r.GET("/customers", getCustomer)
 	r.POST("/customers", addCustomer)
 	r.PUT("/customers", putCustomer)

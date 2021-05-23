@@ -54,12 +54,4 @@ CREATE TABLE users(
 
 INSERT INTO users VALUES (1,'josuefdz','contra','Josue','Fernandez','josuefdz@mail.com')
 
-INSERT INTO Customers VALUES ('MYID','Panadería Roberto','Roberto Fuentes','Dueño',' Calle Nogal #3556, Colonia Bosque Verde, Monterrey','Nuevo León','Centro','64210','México','8123451')
-
-
-
-select * from customers
-
-select * from employees
-
-select * from products
+INSERT INTO Customers VALUES ('MYID','Panaderï¿½a Roberto','Roberto Fuentes','Dueï¿½o',' Calle Nogal #3556, Colonia Bosque Verde, Monterrey','Nuevo Leï¿½n','Centro','64210','Mï¿½xico','8123451')

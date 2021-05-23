@@ -24,6 +24,7 @@ func dbConnect() *gorm.DB {
 	return db
 }
 
+//función que se llama al hacer GET
 func getCustomer(c echo.Context) error {
 
 	CustomerID := c.QueryParam("customer_id")
@@ -32,14 +33,17 @@ func getCustomer(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	return c.JSON(http.StatusOK, customers)
+	return c.JSON(http.StatusOK, customers) //regresa un json con los clientes
 }
 
 func selectCustomer(CustomerID string) ([]Customer, error) {
 
+	//se conecta a la base de datos
 	db := dbConnect()
 
 	customers := []Customer{}
+
+	//Si se ingresó un ID, se busca ese ID, de lo contrario se muestra la lista completa
 
 	if CustomerID != "" {
 		db.Where("customer_id = ?", CustomerID).First(&customers)
@@ -55,17 +59,22 @@ func selectCustomer(CustomerID string) ([]Customer, error) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//función que se llama al hacer POST
 func addCustomer(c echo.Context) error {
+
 	customer := Customer{}
 
 	defer c.Request().Body.Close()
 
+	//obtiene los datos del JSON y los almacena en customer de tipo Customer
 	err := json.NewDecoder(c.Request().Body).Decode(&customer)
 	if err != nil {
 		log.Printf("fallo al procesar addCustomer: %s", err)
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
+	//Se envian a una función para trabajar con ellos en la base de datos
 	result, err := insertCustomer(customer.CustomerID, customer.CompanyName, customer.ContactName, customer.ContactTitle,
 		customer.Address, customer.City, customer.Region, customer.PostalCode,
 		customer.Country, customer.Phone)
@@ -84,8 +93,10 @@ func addCustomer(c echo.Context) error {
 func insertCustomer(customerID string, companyName string, contactName string, contactTitle string, address string, city string,
 	region string, postalCode string, country string, phone string) (int64, error) {
 
+	//se conecta a la base de datos
 	db := dbConnect()
 
+	//se crea un nuevo customer con los datos recibidos y se insertan con el db.Create
 	customer := Customer{CustomerID: customerID, CompanyName: companyName, ContactName: contactName,
 		ContactTitle: contactTitle, Address: address, City: city, Region: region, PostalCode: postalCode,
 		Country: country, Phone: phone}
@@ -96,7 +107,7 @@ func insertCustomer(customerID string, companyName string, contactName string, c
 }
 
 /////////////////////////////////////////////////////////////////////////
-
+//función llamada al hacer PUT
 func putCustomer(c echo.Context) error {
 	customer := Customer{}
 
@@ -107,7 +118,7 @@ func putCustomer(c echo.Context) error {
 		log.Printf("fallo al procesar addCustomer: %s", err)
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-
+	//Al igual que en post se reciben todos los parámetros a través de un JSON
 	result, err := updateCustomer(customer.CustomerID, customer.CompanyName, customer.ContactName, customer.ContactTitle,
 		customer.Address, customer.City, customer.Region, customer.PostalCode,
 		customer.Country, customer.Phone)
@@ -127,7 +138,10 @@ func putCustomer(c echo.Context) error {
 func updateCustomer(customerID string, companyName string, contactName string, contactTitle string, address string, city string,
 	region string, postalCode string, country string, phone string) (int64, error) {
 
+	//se conecta a la base de datos
 	db := dbConnect()
+
+	//se hace el UPDATE con un WHERE donde el ID introducido sea el mismo
 
 	result := db.Model(&Customer{}).Where("customer_id = ?", customerID).Updates(map[string]interface{}{"company_name": companyName,
 		"contact_name": contactName, "contact_title": contactTitle, "address": address, "city": city, "region": region,
@@ -137,7 +151,10 @@ func updateCustomer(customerID string, companyName string, contactName string, c
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+//función llamada al hacer DELETE
 func removeCustomer(c echo.Context) error {
+
+	//Se almacena el ID introducido
 	CustomerID := c.QueryParam("customer_id")
 
 	result, err := deleteCustomer(CustomerID)
@@ -150,10 +167,11 @@ func removeCustomer(c echo.Context) error {
 }
 
 func deleteCustomer(customerID string) (int64, error) {
-	log.Printf("CONECTANDO...\n")
 
+	//se conecta a la base de datos
 	db := dbConnect()
 
+	//Donde el ID sea igual, ejecuta un DELETE
 	result := db.Where("customer_id = ?", customerID).Delete(&Customer{})
 	return result.RowsAffected, result.Error
 }
