@@ -1,0 +1,593 @@
+{
+	"info": {
+		"_postman_id": "05f03cfe-3c46-4315-927a-16db6ae9502f",
+		"name": "PIA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "customers",
+			"item": [
+				{
+					"name": "GET customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/customers?customer_id=MYID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"customers"
+							],
+							"query": [
+								{
+									"key": "customer_id",
+									"value": "MYID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"customer_id\": \"RIPAZ\",\r\n    \"company_name\": \"Enchiladas Josue\",\r\n    \"contact_name\": \"Josue Rodríguez\",\r\n    \"contact_title\": \"Dueño\",\r\n    \"address\": \" Calle Pinos #3451, Colonia Bosque Verde, Monterrey\",\r\n    \"city\": \"Nuevo León\",\r\n    \"region\": \"Centro\",\r\n    \"postal_code\": \"64210\",\r\n    \"country\": \"México\",\r\n    \"phone\": \"8144393\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1323/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"customer_id\": \"RIPAZ\",\r\n    \"company_name\": \"Enchiladas Josue2\",\r\n    \"contact_name\": \"Josue Rodríguez\",\r\n    \"contact_title\": \"Dueño\",\r\n    \"address\": \" Calle Pinos #3451, Colonia Bosque Verde, Monterrey\",\r\n    \"city\": \"Nuevo León\",\r\n    \"region\": \"Centro\",\r\n    \"postal_code\": \"64210\",\r\n    \"country\": \"México\",\r\n    \"phone\": \"8144393\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1323/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/customers?customer_id=MYID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"customers"
+							],
+							"query": [
+								{
+									"key": "customer_id",
+									"value": "MYID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "employees",
+			"item": [
+				{
+					"name": "GET employees",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/employees?employee_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "employee_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"employee_id\": 1,\r\n        \"last_name\": \"Sánchez\",\r\n        \"first_name\": \"Alejandra\",\r\n        \"title\": \"Gerente\",\r\n        \"hire_date\": \"1900-01-01T00:00:00Z\",\r\n        \"address\": \"Calle Esmeralda #345, Colonia Piedras Preciosas, Guadalupe\",\r\n        \"city\": \"Nuevo León\",\r\n        \"region\": \" \",\r\n        \"postal_code\": \"64860\",\r\n        \"country\": \"\",\r\n        \"phone\": \"8168450\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1323/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"employee_id\": 1,\r\n        \"last_name\": \"Sánchez\",\r\n        \"first_name\": \"Alexandra\",\r\n        \"title\": \"Gerente\",\r\n        \"hire_date\": \"1900-01-01T00:00:00Z\",\r\n        \"address\": \"Calle Esmeralda #345, Colonia Piedras Preciosas, Guadalupe\",\r\n        \"city\": \"Nuevo León\",\r\n        \"region\": \" \",\r\n        \"postal_code\": \"64860\",\r\n        \"country\": \"\",\r\n        \"phone\": \"8168450\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1323/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/employees?employee_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "employee_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "GET products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/products?product_id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "product_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"product_id\": 3,\r\n        \"product_name\": \"Chespiritortas\",\r\n        \"quantity_per_unit\": \"1\",\r\n        \"unit_price\": 80,\r\n        \"units_in_stock\": 0,\r\n        \"discontinued\": true\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1323/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"product_id\": 3,\r\n        \"product_name\": \"Chespiritortas\",\r\n        \"quantity_per_unit\": \"8\",\r\n        \"unit_price\": 80,\r\n        \"units_in_stock\": 0,\r\n        \"discontinued\": true\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1323/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc3VlZmR6QG1haWwuY29tIiwiZXhwIjoxNjIyNDM1NDU0LCJmaXJzdF9uYW1lIjoiSm9zdWUiLCJsYXN0X25hbWUiOiJGZXJuYW5kZXoiLCJ1c2VybmFtZSI6Impvc3VlZmR6In0.uc41OJ_2kAvKPwJgwY8WCY-ynqZ51-WGDy5sgdPGWlo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1323/api/products?product_id=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1323",
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "product_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1323/login?username=josuefdz&password=contra",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1323",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "josuefdz"
+						},
+						{
+							"key": "password",
+							"value": "contra"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

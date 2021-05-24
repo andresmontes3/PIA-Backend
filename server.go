@@ -68,7 +68,7 @@ func login(c echo.Context) error {
 	claims["first_name"] = user[0].FirstName
 	claims["last_name"] = user[0].LastName
 	claims["email"] = user[0].Email
-	claims["exp"] = time.Now().Add(time.Hour * 48).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 170).Unix() //le da una fecha de expiración en 170 horas
 
 	t, err := token.SignedString([]byte("pia")) //se hace salting con la palabra pia
 	if err != nil {
