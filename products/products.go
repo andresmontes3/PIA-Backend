@@ -24,6 +24,7 @@ func dbConnect() *gorm.DB {
 	return db
 }
 
+//función que se llama al hacer GET
 func getProduct(c echo.Context) error {
 
 	ProductID := c.QueryParam("product_id")
@@ -32,15 +33,16 @@ func getProduct(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-	return c.JSON(http.StatusOK, products)
+	return c.JSON(http.StatusOK, products) //regresa un json con los productos
 }
 
 func selectProduct(ProductID string) ([]Product, error) {
-
+	//se conecta a la base de datos
 	db := dbConnect()
 
 	products := []Product{}
 
+	//Si se ingresó un ID, se busca ese ID, de lo contrario se muestra la lista completa
 	if ProductID != "" {
 		db.Where("product_id = ?", ProductID).First(&products)
 
@@ -54,17 +56,20 @@ func selectProduct(ProductID string) ([]Product, error) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//función que se llama al hacer POST
 func addProduct(c echo.Context) error {
 	product := Product{}
 
 	defer c.Request().Body.Close()
+	//obtiene los datos del JSON y los almacena en employee de tipo Product
 
 	err := json.NewDecoder(c.Request().Body).Decode(&product)
 	if err != nil {
 		log.Printf("fallo al procesar addProduct: %s", err)
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-
+	//Se envian a una función para trabajar con ellos en la base de datos
 	result, err := insertProduct(product.ProductID, product.ProductName, product.QuantityPerUnit, product.UnitPrice,
 		product.UnitsInStock, product.Discontinued)
 
@@ -81,16 +86,10 @@ func addProduct(c echo.Context) error {
 
 func insertProduct(productID int, productName string, quantityPerUnit string, unitPrice float64,
 	unitsInStock int, discontinued bool) (int64, error) {
-
+	//se conecta a la base de datos
 	db := dbConnect()
-	/*
-		var disc int
-		if discontinued {
-			disc = 1
-		} else {
-			disc = 0
-		}
-	*/
+
+	//se crea un nuevo product con los datos recibidos y se insertan con el db.Create
 	product := Product{ProductID: productID, ProductName: productName, QuantityPerUnit: quantityPerUnit,
 		UnitPrice: unitPrice, UnitsInStock: unitsInStock, Discontinued: discontinued}
 	result := db.Create(&product)
@@ -100,7 +99,7 @@ func insertProduct(productID int, productName string, quantityPerUnit string, un
 }
 
 /////////////////////////////////////////////////////////////////////////
-
+//función llamada al hacer PUT
 func putProduct(c echo.Context) error {
 	product := Product{}
 
@@ -111,7 +110,7 @@ func putProduct(c echo.Context) error {
 		log.Printf("fallo al procesar putProduct: %s", err)
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
-
+	//Al igual que en post se reciben todos los parámetros a través de un JSON
 	result, err := updateProduct(product.ProductID, product.ProductName, product.QuantityPerUnit, product.UnitPrice,
 		product.UnitsInStock, product.Discontinued)
 
@@ -129,9 +128,10 @@ func putProduct(c echo.Context) error {
 
 func updateProduct(productID int, productName string, quantityPerUnit string, unitPrice float64,
 	unitsInStock int, discontinued bool) (int64, error) {
-
+	//se conecta a la base de datos
 	db := dbConnect()
 
+	//se hace el UPDATE con un WHERE donde el ID introducido sea el mismo
 	result := db.Model(&Product{}).Where("product_id = ?", productID).Updates(map[string]interface{}{
 		"product_name": productName, "quantity_per_unit": quantityPerUnit, "unit_price": unitPrice,
 		"units_in_stock": unitsInStock, "discontinued": discontinued})
@@ -140,7 +140,10 @@ func updateProduct(productID int, productName string, quantityPerUnit string, un
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+//función llamada al hacer DELETE
 func removeProduct(c echo.Context) error {
+
+	//Se almacena el ID introducido
 	ProductID := c.QueryParam("product_id")
 
 	result, err := deleteProduct(ProductID)
@@ -153,9 +156,10 @@ func removeProduct(c echo.Context) error {
 }
 
 func deleteProduct(productID string) (int64, error) {
-
+	//se conecta a la base de datos
 	db := dbConnect()
 
+	//Donde el ID sea igual, ejecuta un DELETE
 	result := db.Where("product_id = ?", productID).Delete(&Product{})
 	return result.RowsAffected, result.Error
 }

@@ -1,5 +1,6 @@
 package employees
 
+//estructura para la tabla employees
 type Employee struct {
 	EmployeeID int    `json:"employee_id"`
 	LastName   string `json:"last_name"`

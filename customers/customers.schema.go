@@ -1,5 +1,6 @@
 package customers
 
+//estructura para la tabla customers
 type Customer struct {
 	CustomerID   string `json:"customer_id"`
 	CompanyName  string `json:"company_name"`

@@ -1,5 +1,6 @@
 package products
 
+//estructura para la tabla products
 type Product struct {
 	ProductID       int     `json:"product_id"`
 	ProductName     string  `json:"product_name"`
