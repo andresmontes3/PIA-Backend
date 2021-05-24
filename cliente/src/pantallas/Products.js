@@ -5,6 +5,7 @@ import ProductList from '../components/ProductList';
 class Products extends React.Component{
 
     state = {
+      token: '',
       products: [],
         product_id: 0,
         product_name: '',
@@ -24,8 +25,11 @@ class Products extends React.Component{
   
     
      reqDelete=()=>{
-      fetch('http://localhost:1323/products?product_id='+this.state.product_id,{
-        method:'delete'
+      fetch('http://localhost:1323/api/products?product_id='+this.state.product_id,{
+        method:'delete',
+        headers:{
+          'Authorization':'Bearer '+this.state.token
+        }
      })
      .then((data) => {
       this.reqGet()
@@ -35,8 +39,11 @@ class Products extends React.Component{
      }
   
      reqGet=()=>{
-      fetch('http://localhost:1323/products',{
-        method:'get'
+      fetch('http://localhost:1323/api/products',{
+        method:'get',
+        headers:{
+          'Authorization':'Bearer '+this.state.token
+        }
      })
      .then(res => res.json())
      .then((data) => {
@@ -47,11 +54,12 @@ class Products extends React.Component{
      }
   
      reqPost=async()=>{
-      await fetch('http://localhost:1323/products',{
+      await fetch('http://localhost:1323/api/products',{
         method:'post',
         headers: {
           'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer '+this.state.token
         },
         body: JSON.stringify(
           {
@@ -70,8 +78,24 @@ class Products extends React.Component{
      .catch(console.log)
      }
    
+
+     login = async()=>{
+      await fetch('http://localhost:1323/login?username=josuefdz&password=contra',{
+        method:'post'
+     })
+     .then((res) => {
+
+       res.json().then(result =>{
+         console.log(result.token)
+         this.setState({token:result.token})
+          this.reqGet()
+       })
+       
+     })
+     .catch(console.log)
+     } 
      componentDidMount() {
-       this.reqGet();
+       this.login();
      }
      
   

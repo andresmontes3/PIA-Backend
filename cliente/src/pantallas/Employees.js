@@ -5,6 +5,7 @@ import EmployeeList from '../components/EmployeeList';
 class Employees extends React.Component{
 
     state = {
+      token:'',
       employees: [],
         employee_id: 0,
         last_name: '',
@@ -28,8 +29,11 @@ class Employees extends React.Component{
   
     
      reqDelete=()=>{
-      fetch('http://localhost:1323/employees?employee_id='+this.state.employee_id,{
-        method:'delete'
+      fetch('http://localhost:1323/api/employees?employee_id='+this.state.employee_id,{
+        method:'delete',
+        headers:{
+          'Authorization':'Bearer '+this.state.token
+        }
      })
      .then((data) => {
       this.reqGet()
@@ -39,8 +43,11 @@ class Employees extends React.Component{
      }
   
      reqGet=()=>{
-      fetch('http://localhost:1323/employees',{
-        method:'get'
+      fetch('http://localhost:1323/api/employees',{
+        method:'get',
+        headers:{
+          'Authorization':'Bearer '+this.state.token
+        }
      })
      .then(res => res.json())
      .then((data) => {
@@ -51,11 +58,12 @@ class Employees extends React.Component{
      }
   
      reqPost=async()=>{
-      await fetch('http://localhost:1323/employees',{
+      await fetch('http://localhost:1323/api/employees',{
         method:'post',
         headers: {
           'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer '+this.state.token
         },
         body: JSON.stringify(
           {
@@ -78,9 +86,26 @@ class Employees extends React.Component{
      })
      .catch(console.log)
      }
+
+
+     login = async()=>{
+      await fetch('http://localhost:1323/login?username=josuefdz&password=contra',{
+        method:'post'
+     })
+     .then((res) => {
+
+       res.json().then(result =>{
+         console.log(result.token)
+         this.setState({token:result.token})
+          this.reqGet()
+       })
+       
+     })
+     .catch(console.log)
+     }
    
      componentDidMount() {
-       this.reqGet();
+       this.login();
      }
      
   

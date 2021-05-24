@@ -5,6 +5,7 @@ import CustomerList from '../components/CustomerList';
 class Customers extends React.Component{
 
     state = {
+      token: '',
       customers: [],
         customer_id: '',
         company_name: '',
@@ -27,8 +28,11 @@ class Customers extends React.Component{
   
     
      reqDelete=()=>{
-      fetch('http://localhost:1323/customers?customer_id='+this.state.customer_id,{
-        method:'delete'
+      fetch('http://localhost:1323/api/customers?customer_id='+this.state.customer_id,{
+        method:'delete',
+        headers:{
+          'Authorization':'Bearer '+this.state.token
+        }
      })
      .then((data) => {
       this.reqGet()
@@ -38,8 +42,11 @@ class Customers extends React.Component{
      }
   
      reqGet=()=>{
-      fetch('http://localhost:1323/customers',{
-        method:'get'
+      fetch('http://localhost:1323/api/customers',{
+        method:'get',
+        headers:{
+          'Authorization':'Bearer '+this.state.token
+        }
      })
      .then(res => res.json())
      .then((data) => {
@@ -50,9 +57,10 @@ class Customers extends React.Component{
      }
   
      reqPost=async()=>{
-      await fetch('http://localhost:1323/customers',{
+      await fetch('http://localhost:1323/api/customers',{
         method:'post',
         headers: {
+          'Authorization':'Bearer '+this.state.token,
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json'
         },
@@ -76,9 +84,28 @@ class Customers extends React.Component{
      })
      .catch(console.log)
      }
+
+     
+
+     login = async()=>{
+      await fetch('http://localhost:1323/login?username=josuefdz&password=contra',{
+        method:'post'
+     })
+     .then((res) => {
+
+       res.json().then(result =>{
+         console.log(result.token)
+         this.setState({token:result.token})
+          this.reqGet()
+       })
+       
+     })
+     .catch(console.log)
+     }
    
      componentDidMount() {
-       this.reqGet();
+       this.login();
+    
      }
      
   

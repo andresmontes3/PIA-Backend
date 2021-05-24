@@ -75,6 +75,14 @@ func login(c echo.Context) error {
 		return err
 	}
 
+	/*
+
+		c.SetCookie(&http.Cookie{
+			Name:    "token",
+			Value:   t,
+			Expires: time.Now().Add(time.Hour * 48),
+		})*/
+
 	return c.JSON(http.StatusOK, map[string]string{ //regresa el token como cadena
 		"token": t,
 	})
@@ -87,7 +95,7 @@ func main() {
 	//Configuración de los CORS
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
 
