@@ -14,10 +14,66 @@ Primero es necesario instalar Go, para eso se descarga el msi desde este [link](
 * **Login**
 * **Customers**
 	* **GET Customers**
+		* **Pruebas**:
+		* **URL**: http://localhost:1323/api/customers
+		* **Metodo HTTP**: GET
+		* **Parámetros del URL**: No aplica
+		* **Parámetros del body**: No aplica
 	* **GET Customer**
+		* **Pruebas**:
+		* **URL**: http://localhost:1323/api/customers?customer_id=id
+		* **Metodo HTTP**: GET
+		* **Parámetros del URL**: ``customer_id``
+		* **Parámetros del body**: No aplica
 	* **POST Customer**
+		 * **Pruebas**:
+		*  **URL**: http://localhost:1323/api/customers
+		* **Metodo HTTP**: POST
+		* **Parámetros del URL**: No aplica
+		* **Parámetros del body**: 
+    ```
+    {
+    "customer_id"="id",
+    "company_name": "compañia",
+    "contact_name": "nombre",
+    "contact_title": "cargo",
+    "address": "direccion",
+    "city": "ciudad",
+    "region": "region",
+    "postal_code": "codigo postal",
+    "country": "pais",
+    "phone": "numero telefonico"
+    }
+    ```	
+    
 	* **PUT Customer**
+		* **Pruebas**:
+		*  **URL**: http://localhost:1323/api/customers
+		* **Metodo HTTP**: PUT
+		* **Parámetros del URL**: No aplica
+		* **Parámetros del body**: 
+	 ```
+    {
+    "customer_id"="id",
+    "company_name": "compañia",
+    "contact_name": "nombre",
+    "contact_title": "cargo",
+    "address": "direccion",
+    "city": "ciudad",
+    "region": "region",
+    "postal_code": "codigo postal",
+    "country": "pais",
+    "phone": "numero telefonico"
+    }
+    ```	
+
 	* **DELETE Customer**
+		* **Pruebas**:
+		* **URL**: http://localhost:1323/api/customers?customer_id=id
+		* **Metodo HTTP**: DELETE
+		* **Parámetros del URL**: ``customer_id``
+		* **Parámetros del body**: No aplica
+
 * **Employees**
 	* **GET Employees**
 	* **GET Employee**
