@@ -28,16 +28,7 @@
     ```
     {"token": <nuevo Token> }
     ```
-    * **POST Login:** http://localhost:8000/users/login </br>
-    Precargado con la siguiente informacion:
-    ```
-    email:registro@mail.com
-    password:registro
-    ```
-    Retorna:
-    ```
-    {"token": <Token generado>, "firstName":"registroPruebaNombre", "lastName":"registroPruebaApellido", "email":"registro@mail.com", "country":"registroPruebaPais", "uid":"60aad875e044d7192c5498d8"}
-    ```
+   
     * **GET Customers:** http://localhost:1323/api/customers </br>
     Retorna: 
     Lista de clientes
