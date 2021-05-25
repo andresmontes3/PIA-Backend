@@ -12,6 +12,12 @@ Primero es necesario instalar Go, para eso se descarga el msi desde este [link](
 
 ### EndPoints
 * **Login**
+	* **Pruebas**:
+	* **URL**: http://localhost:1323/login?username=usuario&password=contraseña
+	* **Metodo HTTP**: POST
+	* **Parámetros del URL**: ``username`` ``password``
+	* **Parámetros del body**: No aplica
+El Token que regresa se cambia **manualmente** en el header de **Authorization** de los demas request como Bearer
 * **Customers**
 	* **GET Customers**
 		* **Pruebas**:
