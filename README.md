@@ -41,19 +41,19 @@
     * **GET Customers:** http://localhost:1323/api/customers </br>
     Retorna: 
     Lista de clientes
-    **GET Customer:** http://localhost:1323/api/customers?customer_id="id" </br>
+   * **GET Customer:** http://localhost:1323/api/customers?customer_id="id" </br>
     Retorna: 
     Cliente
-       **GET Employees:** http://localhost:1323/api/employees </br>
+    *  **GET Employees:** http://localhost:1323/api/employees </br>
     Retorna: 
     Lista de empleados
-     **GET Employees:** http://localhost:1323/api/employees </br>
+    * **GET Employee:** http://localhost:1323/api/employees?employee_id="id" </br>
     Retorna:
     Empleado
-       **GET Products:** http://localhost:1323/api/products </br>
+     *  **GET Products:** http://localhost:1323/api/products </br>
     Retorna: 
     Lista de productos
-      **GET Products:** http://localhost:1323/api/products </br>
+     * **GET Product:** http://localhost:1323/api/products?product_id="id" </br>
     Retorna: 
     Producto
 
@@ -102,6 +102,55 @@
     "discontinued": true
     }
     ```
+    * **PUT Customer** http://localhost:1323/api/products </br>
+    Body:
+    ```
+    {
+    "customer_id"="RIPAZ",
+    "company_name": "Enchiladas Josue2",
+    "contact_name": "Josue Rodríguez",
+    "contact_title": "Dueño",
+    "address": " Calle Pinos #3451, Colonia Bosque Verde, Monterrey",
+    "city": "Nuevo León",
+    "region": "Centro",
+    "postal_code": "64210",
+    "country": "México",
+    "phone": "8144393"
+    }
+    ```
+    * **PUT Employee** http://localhost:1323/api/products </br>
+    Body:
+    ```
+    {
+    "employee_id": 1,
+    "last_name": "Sánchez",
+    "first_name": "Alexandra",
+    "title": "Gerente",
+    "hire_date": "1900-01-01T00:00:00Z",
+    "address": "Calle Esmeralda #345, Colonia Piedras Preciosas, Guadalupe",
+    "city": "Nuevo León",
+    "region": " ",
+    "postal_code": "64860",
+    "country": "",
+    "phone": "8168450"
+    }
+    ```
+    * **PUT Product** http://localhost:1323/api/products </br>
+    Body:
+    ```
+    {
+    "product_id": 3,
+    "product_name": "Chespiritortas",
+    "quantity_per_unit": "8",
+    "unit_price": 80,
+    "units_in_stock": 0,
+    "discontinued": true
+    }
+    ```
+  *  **DELETE Customers:** http://localhost:1323/api/customers?customer_id="id" </br>
 
-    * **DELETE User:** http://localhost:8000/users/"id" </br>
-    Retorna: lista de usuarios pero ya eliminado el usuario con el id especificado
+  *  **DELETE Employees:** http://localhost:1323/api/employees?employee_id="id" </br>
+
+  *  **DELETE Products:** http://localhost:1323/api/products?product_id="id" </br>
+
+
