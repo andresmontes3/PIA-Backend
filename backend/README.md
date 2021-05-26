@@ -38,8 +38,9 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
 		* **Metodo HTTP**: POST
 		* **Parámetros del URL**: No aplica
 		* **Parámetros del body**: 
-                ```
-                {"customer_id"="id",
+		```
+                {
+                "customer_id"="id",
                 "company_name": "compañia",
                 "contact_name": "nombre",
                 "contact_title": "cargo",
@@ -50,7 +51,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
                 "country": "pais",
                 "phone": "numero telefonico"
                 }
-                ```
+	     ```
 	* **PUT Customer**
 		* **Pruebas**:
 		*  **URL**: http://localhost:1323/api/customers
