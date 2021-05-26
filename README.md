@@ -2,6 +2,7 @@
 # PIA Backend
 #### Integrantes
 ##### Andrés Isaac Montes Bartolo 1854017
+##### Juan Daniel Morón Guajardo 1842834
 ----
 ## Base de datos
 1. Se requiere tener instalado [Microsoft SQL Server](https://www.microsoft.com/es-mx/sql-server/sql-server-downloads) y el [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15) para poder ejecutar el archivo backendBdd.sql y crear la base de datos
