@@ -71,7 +71,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
                 "country": "pais",
                "phone": "numero telefonico"
                 }
-                ```
+             ```
 	* **DELETE Customer**
 		* **Pruebas**:
 		* **URL**: http://localhost:1323/api/customers?customer_id=id
@@ -133,7 +133,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
 	    "country":"pais",
             "phone": "telefono"
             }
-            ```
+         ```
 	* **DELETE Employee**
 	    * **Pruebas**:
 	    * **URL**: http://localhost:1323/api/employees?employee_id=id
