@@ -13,27 +13,28 @@ Primero es necesario instalar Go, para eso se descarga el msi desde este [link](
 
 ### EndPoints
 * **Login**
-	* **Pruebas**:
+	* **Pruebas**:<br>![login](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/login.jpg)
 	* **URL**: http://localhost:1323/login?username=usuario&password=contraseña
 	* **Metodo HTTP**: POST
 	* **Parámetros del URL**: ``username`` ``password``
-	* **Parámetros del body**: No aplica
-El Token que regresa se cambia **manualmente** en el header de **Authorization** de los demas request como Bearer
+	* **Parámetros del body**: No aplica<br><br>
+El Token que regresa se cambia **manualmente** en el header de **Authorization** de los demas request como Bearer.
+Solo existe el usuario josuefdz con contraseña=contra en la base de datos, si se intenta entrar con otro la petición será rechazada.
 * **Customers**
 	* **GET Customers**
-		* **Pruebas**:
+		* **Pruebas**:<br>![getCustomers](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Customer/GetCustomers.png)
 		* **URL**: http://localhost:1323/api/customers
 		* **Metodo HTTP**: GET
 		* **Parámetros del URL**: No aplica
 		* **Parámetros del body**: No aplica
 	* **GET Customer**
-		* **Pruebas**:
+		* **Pruebas**:<br>![getCustomer](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Customer/GetCustomer.png)
 		* **URL**: http://localhost:1323/api/customers?customer_id=id
 		* **Metodo HTTP**: GET
 		* **Parámetros del URL**: ``customer_id``
 		* **Parámetros del body**: No aplica
 	* **POST Customer**
-		* **Pruebas**:
+		* **Pruebas**:<br>![postCustomer](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Customer/PostCustomer.png)
 		*  **URL**: http://localhost:1323/api/customers
 		* **Metodo HTTP**: POST
 		* **Parámetros del URL**: No aplica
@@ -53,7 +54,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
                 }
 	     ```
 	* **PUT Customer**
-		* **Pruebas**:
+		* **Pruebas**:<br>![putCustomer](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Customer/PutCustomer.png)
 		*  **URL**: http://localhost:1323/api/customers
 		* **Metodo HTTP**: PUT
 		* **Parámetros del URL**: No aplica
@@ -73,7 +74,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
                 }
              ```
 	* **DELETE Customer**
-		* **Pruebas**:
+		* **Pruebas**:<br>![deleteCustomer](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Customer/DeleteCustomer.png)<br>![deletedCustomer](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Customer/GetCustomers-AfterDelete.png)
 		* **URL**: http://localhost:1323/api/customers?customer_id=id
 		* **Metodo HTTP**: DELETE
 		* **Parámetros del URL**: ``customer_id``
@@ -81,19 +82,19 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
 
 * **Employees**
 	* **GET Employees**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![getEmployees](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Employee/GetEmployees.png)
 	    * **URL**: http://localhost:1323/api/employees
 	    * **Metodo HTTP**: GET
 	    * **Parámetros del URL**: No aplica
 	    * **Parámetros del body**: No aplica
 	* **GET Employee**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![getEmployee](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Employee/GetEmployee.png)
 	    * **URL**: http://localhost:1323/api/employees?employee_id=id
 	    * **Metodo HTTP**: GET
 	    * **Parámetros del URL**: ``employee_id``
 	    * **Parámetros del body**: No aplica
 	* **POST Employee**
-	     * **Pruebas**:
+	     * **Pruebas**:<br>![postEmployee](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Employee/PostEmployee.png)
 	     * **URL**: http://localhost:1323/api/employees
 	     * **Metodo HTTP**: POST
 	     * **Parámetros del URL**: No aplica
@@ -114,7 +115,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
              }
 	     ```
 	* **PUT Employee**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![putEmployee](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Employee/PutEmployee.png)
 	    * **URL**: http://localhost:1323/api/employees
 	    * **Metodo HTTP**: PUT
 	    * **Parámetros del URL**: No aplica
@@ -135,7 +136,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
             }
          ```
 	* **DELETE Employee**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![deleteEmployee](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Employee/DeleteEmployee.png)<br>![deletedEmployee](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Employee/GetEmployee-afterDelete.png)
 	    * **URL**: http://localhost:1323/api/employees?employee_id=id
 	    * **Metodo HTTP**: DELETE
 	    * **Parámetros del URL**: ``employee_id``
@@ -143,19 +144,19 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
 	
 * **Products**
 	* **GET Products**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![getProducts](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Products/getProducts.png)
 	    * **URL**: http://localhost:1323/api/products
 	    * **Metodo HTTP**: GET
 	    * **Parámetros del URL**: No aplica
 	    * **Parámetros del body**: No aplica
 	* **GET Product**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![getProduct](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Products/getProduct.png)
 	    * **URL**: http://localhost:1323/api/products?product_id=id
 	    * **Metodo HTTP**: GET
 	    * **Parámetros del URL**: ``product_id``
 	    * **Parámetros del body**: No aplica
 	* **POST Product**
-	     * **Pruebas**:
+	     * **Pruebas**:<br>![postProduct](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Products/postproduct.png)
 	     * **URL**: http://localhost:1323/api/products
 	     * **Metodo HTTP**: POST
 	     * **Parámetros del URL**: No aplica
@@ -171,7 +172,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
 	}    
 	```
 	* **PUT Product**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![putProduct](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Products/putProduct.png)
 	    * **URL**: http://localhost:1323/api/products
 	    * **Metodo HTTP**: PUT
 	    * **Parámetros del URL**: No aplica
@@ -187,7 +188,7 @@ El Token que regresa se cambia **manualmente** en el header de **Authorization**
 	}    
 	```
 	* **DELETE Product**
-	    * **Pruebas**:
+	    * **Pruebas**:<br>![deleteProduct](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Products/deleteProduct.png)<br>![deletedProduct](https://github.com/andresmontes3/PIA-Backend/blob/master/capturas/Products/getProduct-afterdelete.png)
 	    * **URL**: http://localhost:1323/api/products?product_id=id
 	    * **Metodo HTTP**: DELETE
 	    * **Parámetros del URL**: ``product_id``
